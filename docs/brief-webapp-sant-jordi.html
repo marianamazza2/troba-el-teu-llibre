@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief Webapp Sant Jordi — Mockup Interactivo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #f0ece4; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const SCREENS = [
+  "landing",
+  "q1_recipient",
+  "q2_describe",
+  "q3_genres",
+  "q4_lastread",
+  "q5_prefs",
+  "loading",
+  "results",
+  "dedication",
+  "share"
+];
+
+const SCREEN_LABELS = [
+  "Landing",
+  "¿Para quién?",
+  "Descríbele",
+  "Géneros",
+  "Último libro",
+  "Idioma y precio",
+  "Cargando...",
+  "Resultados",
+  "Dedicatoria",
+  "Compartir"
+];
+
+function SantJordiMockup() {
+  const [currentScreen, setCurrentScreen] = useState(0);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [loadingDots, setLoadingDots] = useState(0);
+  const [loadingText, setLoadingText] = useState(0);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [showDedication, setShowDedication] = useState(false);
+
+  const loadingTexts = [
+    "Buscant entre milers de llibres...",
+    "Llegint les teves preferències...",
+    "Preparant les recomanacions..."
+  ];
+
+  useEffect(() => {
+    if (SCREENS[currentScreen] === "loading") {
+      const dotInterval = setInterval(() => setLoadingDots(d => (d + 1) % 4), 400);
+      const textInterval = setInterval(() => setLoadingText(t => (t + 1) % 3), 2000);
+      const autoAdvance = setTimeout(() => setCurrentScreen(7), 4000);
+      return () => { clearInterval(dotInterval); clearInterval(textInterval); clearTimeout(autoAdvance); };
+    }
+  }, [currentScreen]);
+
+  const recipients = [
+    { id: "parella", emoji: "💕", label: "Parella" },
+    { id: "amic", emoji: "🤝", label: "Amic o amiga" },
+    { id: "mare", emoji: "💐", label: "Mare o Pare" },
+    { id: "fill", emoji: "🧒", label: "Fill o filla" },
+    { id: "company", emoji: "💼", label: "Company de feina" },
+    { id: "mi", emoji: "✨", label: "Per a mi" }
+  ];
+
+  const genres = [
+    { id: "narrativa", emoji: "📖", label: "Narrativa" },
+    { id: "thriller", emoji: "🔍", label: "Thriller" },
+    { id: "romantic", emoji: "💗", label: "Romàntic" },
+    { id: "scifi", emoji: "🚀", label: "Ciència ficció" },
+    { id: "nofic", emoji: "🧠", label: "No ficció" },
+    { id: "poesia", emoji: "🪶", label: "Poesia" },
+    { id: "comic", emoji: "💬", label: "Còmic" },
+    { id: "historia", emoji: "🏛️", label: "Història" }
+  ];
+
+  const mockBooks = [
+    { title: "L'ombra del vent", author: "Carlos Ruiz Zafón", why: "Perfecte perquè li agrada el misteri i Barcelona — aquesta novel·la combina les dues coses magistralment.", price: "12,95€", color: "#8B2332" },
+    { title: "Canto jo i la muntanya balla", author: "Irene Solà", why: "Per a algú que estima la natura i la literatura catalana, aquest llibre és pur màgic del Pirineu.", price: "18,90€", color: "#2C3E2D" },
+    { title: "La plaça del Diamant", author: "Mercè Rodoreda", why: "Un clàssic que connecta amb la seva sensibilitat i la seva estima per les històries amb ànima.", price: "11,50€", color: "#8B6914" }
+  ];
+
+  const wizardStep = () => {
+    const screenName = SCREENS[currentScreen];
+    if (["q1_recipient", "q2_describe", "q3_genres", "q4_lastread", "q5_prefs"].includes(screenName)) {
+      const idx = SCREENS.indexOf(screenName) - 1;
+      return idx;
+    }
+    return null;
+  };
+
+  const step = wizardStep();
+
+  const Phone = ({ children }) => (
+    <div style={{
+      width: 340, minHeight: 680, maxHeight: 720,
+      background: "#F5F0E8",
+      borderRadius: 40,
+      border: "8px solid #1a1a1a",
+      position: "relative",
+      overflow: "hidden",
+      boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.1)",
+      display: "flex",
+      flexDirection: "column"
+    }}>
+      {/* Status bar */}
+      <div style={{
+        height: 44, display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 24px", fontSize: 12, fontWeight: 600, color: "#333", flexShrink: 0
+      }}>
+        <span>9:41</span>
+        <div style={{
+          width: 100, height: 28, background: "#1a1a1a", borderRadius: 20, margin: "0 auto"
+        }} />
+        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+          <svg width="16" height="12" viewBox="0 0 16 12"><rect x="0" y="6" width="3" height="6" rx="1" fill="#333"/><rect x="4.5" y="4" width="3" height="8" rx="1" fill="#333"/><rect x="9" y="2" width="3" height="10" rx="1" fill="#333"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#333" opacity="0.3"/></svg>
+          <svg width="20" height="12" viewBox="0 0 20 12"><rect x="0" y="0" width="18" height="12" rx="2" stroke="#333" strokeWidth="1.5" fill="none"/><rect x="2" y="2.5" width="11" height="7" rx="1" fill="#333"/><rect x="18.5" y="3.5" width="2" height="5" rx="1" fill="#333"/></svg>
+        </div>
+      </div>
+      {/* Content */}
+      <div style={{ flex: 1, overflow: "auto", display: "flex", flexDirection: "column" }}>
+        {children}
+      </div>
+      {/* Home indicator */}
+      <div style={{
+        height: 24, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+      }}>
+        <div style={{ width: 120, height: 4, background: "#333", borderRadius: 2, opacity: 0.3 }} />
+      </div>
+    </div>
+  );
+
+  const ProgressBar = ({ current, total = 5 }) => (
+    <div style={{ display: "flex", gap: 6, padding: "0 24px", marginBottom: 20 }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} style={{
+          flex: 1, height: 3, borderRadius: 2,
+          background: i <= current ? "#C41E3A" : "#D4C9B8",
+          transition: "background 0.3s"
+        }} />
+      ))}
+    </div>
+  );
+
+  const WizardNav = ({ canNext = true }) => (
+    <div style={{ padding: "12px 24px 8px", flexShrink: 0 }}>
+      <button
+        onClick={() => canNext && setCurrentScreen(currentScreen + 1)}
+        style={{
+          width: "100%", padding: "14px", border: "none", borderRadius: 12,
+          background: canNext ? "#C41E3A" : "#D4C9B8",
+          color: "#fff", fontSize: 15, fontWeight: 700,
+          cursor: canNext ? "pointer" : "default",
+          letterSpacing: 0.3, transition: "all 0.2s"
+        }}
+      >
+        {currentScreen === 5 ? "Troba els llibres! 📚" : "Continuar →"}
+      </button>
+      {currentScreen > 1 && (
+        <button onClick={() => setCurrentScreen(currentScreen - 1)} style={{
+          width: "100%", padding: "10px", border: "none", background: "transparent",
+          color: "#999", fontSize: 13, cursor: "pointer", marginTop: 4
+        }}>
+          ← Enrere
+        </button>
+      )}
+    </div>
+  );
+
+  const renderScreen = () => {
+    switch (SCREENS[currentScreen]) {
+      case "landing":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 28px", textAlign: "center" }}>
+            {/* Decorative rose */}
+            <div style={{ fontSize: 56, marginBottom: 16, filter: "drop-shadow(0 4px 8px rgba(196,30,58,0.2))" }}>🌹</div>
+            
+            <div style={{ fontSize: 10, letterSpacing: 4, textTransform: "uppercase", color: "#8B6914", marginBottom: 8, fontWeight: 600 }}>
+              Sant Jordi 2026
+            </div>
+            
+            <h1 style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: 30, fontWeight: 800, color: "#2D2D2D",
+              margin: "0 0 10px", lineHeight: 1.15, letterSpacing: -0.5
+            }}>
+              Troba el teu<br/>Llibre
+            </h1>
+            
+            <p style={{
+              fontSize: 14, color: "#777", lineHeight: 1.6, margin: "0 0 28px",
+              fontFamily: "'DM Sans', sans-serif"
+            }}>
+              No saps quin llibre regalar?<br/>
+              La intel·ligència artificial t'ajuda a trobar el regal perfecte.
+            </p>
+            
+            <button onClick={() => setCurrentScreen(1)} style={{
+              padding: "16px 32px", border: "none", borderRadius: 14,
+              background: "#C41E3A", color: "#fff", fontSize: 16, fontWeight: 700,
+              cursor: "pointer", letterSpacing: 0.3,
+              boxShadow: "0 4px 20px rgba(196,30,58,0.35)"
+            }}>
+              Troba el teu llibre →
+            </button>
+
+            {/* Language toggle */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 20 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#C41E3A", borderBottom: "2px solid #C41E3A", paddingBottom: 2 }}>CAT</span>
+              <span style={{ fontSize: 12, color: "#bbb" }}>ES</span>
+            </div>
+
+            {/* Footer credit */}
+            <div style={{
+              marginTop: 32, paddingTop: 16,
+              borderTop: "1px solid #E5DDD0", fontSize: 10, color: "#bbb"
+            }}>
+              Creat amb codi i IA per <span style={{ color: "#8B6914", fontWeight: 600 }}>Tu Agencia</span>
+            </div>
+          </div>
+        );
+
+      case "q1_recipient":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <ProgressBar current={0} />
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <h2 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 6px"
+              }}>
+                Per a qui és el regal?
+              </h2>
+              <p style={{ fontSize: 13, color: "#999", margin: "0 0 20px" }}>Tria la persona especial 🌹</p>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {recipients.map(r => (
+                  <button key={r.id} onClick={() => setSelectedRecipient(r.id)} style={{
+                    padding: "16px 12px", border: selectedRecipient === r.id ? "2px solid #C41E3A" : "2px solid #E5DDD0",
+                    borderRadius: 14, background: selectedRecipient === r.id ? "#FFF5F5" : "#fff",
+                    cursor: "pointer", textAlign: "center", transition: "all 0.2s"
+                  }}>
+                    <div style={{ fontSize: 26, marginBottom: 6 }}>{r.emoji}</div>
+                    <div style={{
+                      fontSize: 13, fontWeight: selectedRecipient === r.id ? 700 : 500,
+                      color: selectedRecipient === r.id ? "#C41E3A" : "#555"
+                    }}>{r.label}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <WizardNav canNext={selectedRecipient !== null} />
+          </div>
+        );
+
+      case "q2_describe":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <ProgressBar current={1} />
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <h2 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 6px"
+              }}>
+                Explica'ns com és
+              </h2>
+              <p style={{ fontSize: 13, color: "#999", margin: "0 0 20px" }}>
+                Com més detalls, millor seran les recomanacions ✨
+              </p>
+              
+              <div style={{
+                background: "#fff", borderRadius: 14, border: "2px solid #E5DDD0",
+                padding: 16, minHeight: 140, position: "relative"
+              }}>
+                <div style={{
+                  fontSize: 13, color: "#bbb", lineHeight: 1.7,
+                  fontFamily: "'DM Sans', sans-serif"
+                }}>
+                  Li agrada la natura, viatjar per pobles petits, és molt curiosa, li encanten les novel·les de misteri i les històries amb personatges femenins forts...
+                </div>
+              </div>
+
+              <div style={{
+                marginTop: 16, padding: 12, background: "#FFF9EE",
+                borderRadius: 10, border: "1px solid #F0E4CC"
+              }}>
+                <div style={{ fontSize: 11, color: "#8B6914", fontWeight: 600 }}>
+                  💡 Consells per a millors resultats:
+                </div>
+                <div style={{ fontSize: 11, color: "#A89060", marginTop: 4, lineHeight: 1.6 }}>
+                  Descriu la seva personalitat, hobbies, temes que li interessen, o fins i tot pel·lícules i sèries que li agraden.
+                </div>
+              </div>
+            </div>
+            <WizardNav canNext={true} />
+          </div>
+        );
+
+      case "q3_genres":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <ProgressBar current={2} />
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <h2 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 6px"
+              }}>
+                Quins gèneres li agraden?
+              </h2>
+              <p style={{ fontSize: 13, color: "#999", margin: "0 0 20px" }}>Pots triar més d'un 📚</p>
+              
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {genres.map(g => {
+                  const selected = selectedGenres.includes(g.id);
+                  return (
+                    <button key={g.id} onClick={() => {
+                      setSelectedGenres(prev => selected ? prev.filter(x => x !== g.id) : [...prev, g.id]);
+                    }} style={{
+                      padding: "10px 16px", border: selected ? "2px solid #C41E3A" : "2px solid #E5DDD0",
+                      borderRadius: 50, background: selected ? "#FFF5F5" : "#fff",
+                      cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
+                      transition: "all 0.2s"
+                    }}>
+                      <span style={{ fontSize: 16 }}>{g.emoji}</span>
+                      <span style={{
+                        fontSize: 13, fontWeight: selected ? 700 : 500,
+                        color: selected ? "#C41E3A" : "#555"
+                      }}>{g.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {selectedGenres.length > 0 && (
+                <div style={{ marginTop: 16, fontSize: 12, color: "#C41E3A", fontWeight: 600 }}>
+                  {selectedGenres.length} gènere{selectedGenres.length > 1 ? "s" : ""} seleccionat{selectedGenres.length > 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+            <WizardNav canNext={selectedGenres.length > 0} />
+          </div>
+        );
+
+      case "q4_lastread":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <ProgressBar current={3} />
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <h2 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 6px"
+              }}>
+                Últim llibre que li va agradar?
+              </h2>
+              <p style={{ fontSize: 13, color: "#999", margin: "0 0 20px" }}>
+                Opcional, però ajuda molt! 🎯
+              </p>
+              
+              <div style={{
+                background: "#fff", borderRadius: 14, border: "2px solid #E5DDD0",
+                padding: 16, position: "relative"
+              }}>
+                <div style={{ fontSize: 13, color: "#bbb" }}>
+                  Ex: "La sombra del viento", "Sapiens"...
+                </div>
+              </div>
+
+              <button onClick={() => setCurrentScreen(currentScreen + 1)} style={{
+                marginTop: 16, padding: "10px", border: "none", background: "transparent",
+                color: "#C41E3A", fontSize: 13, cursor: "pointer", fontWeight: 600
+              }}>
+                No ho sé, saltar →
+              </button>
+            </div>
+            <WizardNav canNext={true} />
+          </div>
+        );
+
+      case "q5_prefs":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <ProgressBar current={4} />
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <h2 style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 6px"
+              }}>
+                Últims detalls
+              </h2>
+              <p style={{ fontSize: 13, color: "#999", margin: "0 0 20px" }}>Quasi ho tenim! 🌹</p>
+              
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 10 }}>Idioma preferit</div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {["Català", "Castellà", "Anglès", "Tant se val"].map((lang, i) => (
+                    <button key={lang} style={{
+                      padding: "10px 14px", border: i === 0 ? "2px solid #C41E3A" : "2px solid #E5DDD0",
+                      borderRadius: 10, background: i === 0 ? "#FFF5F5" : "#fff",
+                      cursor: "pointer", fontSize: 12,
+                      fontWeight: i === 0 ? 700 : 500,
+                      color: i === 0 ? "#C41E3A" : "#555",
+                      flex: i === 3 ? "none" : 1
+                    }}>{lang}</button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#555", marginBottom: 10 }}>Pressupost</div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {["< 15€", "15-25€", "> 25€", "Tant se val"].map((price, i) => (
+                    <button key={price} style={{
+                      padding: "10px 12px", border: i === 1 ? "2px solid #C41E3A" : "2px solid #E5DDD0",
+                      borderRadius: 10, background: i === 1 ? "#FFF5F5" : "#fff",
+                      cursor: "pointer", fontSize: 12, flex: 1,
+                      fontWeight: i === 1 ? 700 : 500,
+                      color: i === 1 ? "#C41E3A" : "#555"
+                    }}>{price}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <WizardNav canNext={true} />
+          </div>
+        );
+
+      case "loading":
+        return (
+          <div style={{
+            flex: 1, display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center", padding: "0 28px",
+            textAlign: "center"
+          }}>
+            {/* Animated rose */}
+            <div style={{
+              fontSize: 64, marginBottom: 24,
+              animation: "pulse 1.5s ease-in-out infinite",
+            }}>
+              🌹
+            </div>
+            <style>{`
+              @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+              @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+            `}</style>
+            
+            <p style={{
+              fontSize: 15, color: "#555", fontWeight: 500,
+              fontFamily: "'DM Sans', sans-serif",
+              minHeight: 24, transition: "opacity 0.3s"
+            }}>
+              {loadingTexts[loadingText]}
+            </p>
+            
+            <div style={{ display: "flex", gap: 6, marginTop: 16 }}>
+              {[0, 1, 2].map(i => (
+                <div key={i} style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: loadingDots > i ? "#C41E3A" : "#E5DDD0",
+                  transition: "background 0.3s"
+                }} />
+              ))}
+            </div>
+          </div>
+        );
+
+      case "results":
+        return (
+          <div style={{ flex: 1, padding: "16px 0 0", overflow: "auto" }}>
+            <div style={{ padding: "0 24px" }}>
+              <div style={{ textAlign: "center", marginBottom: 16 }}>
+                <div style={{ fontSize: 10, letterSpacing: 3, textTransform: "uppercase", color: "#8B6914", fontWeight: 600 }}>
+                  Les teves recomanacions
+                </div>
+                <h2 style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "6px 0 4px"
+                }}>
+                  3 llibres perfectes 📚
+                </h2>
+                <p style={{ fontSize: 12, color: "#999", margin: 0 }}>Per a la teva parella</p>
+              </div>
+
+              {mockBooks.map((book, i) => (
+                <div key={i} onClick={() => { setSelectedBook(i); setShowDedication(false); }} style={{
+                  background: "#fff", borderRadius: 14, padding: 14, marginBottom: 12,
+                  border: selectedBook === i ? "2px solid #C41E3A" : "2px solid #E5DDD0",
+                  cursor: "pointer", transition: "all 0.2s",
+                  boxShadow: selectedBook === i ? "0 4px 16px rgba(196,30,58,0.12)" : "none"
+                }}>
+                  <div style={{ display: "flex", gap: 12 }}>
+                    {/* Book cover placeholder */}
+                    <div style={{
+                      width: 60, height: 86, borderRadius: 6, flexShrink: 0,
+                      background: `linear-gradient(135deg, ${book.color}, ${book.color}dd)`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      boxShadow: "2px 2px 8px rgba(0,0,0,0.15)"
+                    }}>
+                      <div style={{ color: "#fff", fontSize: 8, textAlign: "center", padding: 4, fontWeight: 700, lineHeight: 1.3 }}>
+                        {book.title}
+                      </div>
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 15, fontWeight: 700, color: "#2D2D2D" }}>
+                        {book.title}
+                      </div>
+                      <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>{book.author}</div>
+                      <div style={{ fontSize: 11, color: "#555", marginTop: 6, lineHeight: 1.5 }}>{book.why}</div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: "#C41E3A" }}>{book.price}</span>
+                        <span style={{
+                          fontSize: 10, color: "#8B6914", fontWeight: 600,
+                          padding: "3px 10px", background: "#FFF9EE", borderRadius: 20
+                        }}>Buscar en llibreries →</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {selectedBook !== null && (
+                <button onClick={() => setCurrentScreen(8)} style={{
+                  width: "100%", padding: "14px", border: "none", borderRadius: 12,
+                  background: "#C41E3A", color: "#fff", fontSize: 14, fontWeight: 700,
+                  cursor: "pointer", marginTop: 4, marginBottom: 8,
+                  boxShadow: "0 4px 16px rgba(196,30,58,0.3)"
+                }}>
+                  Generar dedicatòria per "{mockBooks[selectedBook].title.substring(0, 18)}..." ✍️
+                </button>
+              )}
+
+              <button onClick={() => setCurrentScreen(9)} style={{
+                width: "100%", padding: "12px", border: "2px solid #E5DDD0",
+                borderRadius: 12, background: "transparent", color: "#888",
+                fontSize: 13, cursor: "pointer", marginBottom: 16
+              }}>
+                Compartir resultats →
+              </button>
+            </div>
+          </div>
+        );
+
+      case "dedication":
+        return (
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "16px 0 0" }}>
+            <div style={{ padding: "0 24px", flex: 1 }}>
+              <div style={{ textAlign: "center", marginBottom: 16 }}>
+                <div style={{ fontSize: 32, marginBottom: 8 }}>✍️</div>
+                <h2 style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 4px"
+                }}>
+                  La teva dedicatòria
+                </h2>
+                <p style={{ fontSize: 12, color: "#999", margin: 0 }}>Personalitzada per a {mockBooks[selectedBook || 0].title}</p>
+              </div>
+
+              {/* Dedication card */}
+              <div style={{
+                background: "#FFFDF7", borderRadius: 16, padding: 24,
+                border: "1px solid #E5DDD0",
+                boxShadow: "0 2px 12px rgba(139,105,20,0.08)",
+                position: "relative"
+              }}>
+                {/* Decorative quotes */}
+                <div style={{
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: 48, color: "#E5DDD0", position: "absolute", top: 8, left: 16, lineHeight: 1
+                }}>"</div>
+                <p style={{
+                  fontFamily: "'Caveat', 'Dancing Script', cursive, Georgia",
+                  fontSize: 17, color: "#555", lineHeight: 1.8,
+                  margin: "8px 0 0", paddingTop: 16, fontStyle: "italic"
+                }}>
+                  Per a tu, que m'has ensenyat que les millors aventures comencen amb una pàgina en blanc i algú al costat per compartir-les. Que aquest llibre t'emporti a llocs tan bonics com els que hem viscut junts.
+                </p>
+                <p style={{
+                  fontFamily: "'Caveat', cursive, Georgia",
+                  fontSize: 17, color: "#C41E3A", textAlign: "right",
+                  margin: "12px 0 0", fontStyle: "italic"
+                }}>
+                  Amb tot el meu amor, aquest Sant Jordi 🌹
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+                <button style={{
+                  flex: 1, padding: "12px", border: "2px solid #C41E3A",
+                  borderRadius: 10, background: "#FFF5F5", color: "#C41E3A",
+                  fontSize: 13, fontWeight: 700, cursor: "pointer"
+                }}>
+                  📋 Copiar text
+                </button>
+                <button style={{
+                  flex: 1, padding: "12px", border: "2px solid #E5DDD0",
+                  borderRadius: 10, background: "#fff", color: "#888",
+                  fontSize: 13, cursor: "pointer"
+                }}>
+                  ✏️ Editar
+                </button>
+              </div>
+            </div>
+            <div style={{ padding: "12px 24px 8px" }}>
+              <button onClick={() => setCurrentScreen(9)} style={{
+                width: "100%", padding: "14px", border: "none", borderRadius: 12,
+                background: "#C41E3A", color: "#fff", fontSize: 14, fontWeight: 700,
+                cursor: "pointer", boxShadow: "0 4px 16px rgba(196,30,58,0.3)"
+              }}>
+                Compartir tot 🌹
+              </button>
+              <button onClick={() => setCurrentScreen(7)} style={{
+                width: "100%", padding: "10px", border: "none", background: "transparent",
+                color: "#999", fontSize: 13, cursor: "pointer", marginTop: 4
+              }}>
+                ← Tornar als resultats
+              </button>
+            </div>
+          </div>
+        );
+
+      case "share":
+        return (
+          <div style={{
+            flex: 1, display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center", padding: "0 28px",
+            textAlign: "center"
+          }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>🌹📚</div>
+            <h2 style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: 22, fontWeight: 700, color: "#2D2D2D", margin: "0 0 8px"
+            }}>
+              Comparteix-ho!
+            </h2>
+            <p style={{ fontSize: 13, color: "#888", margin: "0 0 24px", lineHeight: 1.6 }}>
+              Envia les recomanacions o<br/>ajuda a algú més a trobar el seu llibre
+            </p>
+
+            <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 10 }}>
+              <button style={{
+                width: "100%", padding: "14px 20px", border: "none", borderRadius: 12,
+                background: "#25D366", color: "#fff", fontSize: 14, fontWeight: 700,
+                cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+              }}>
+                <span style={{ fontSize: 18 }}>💬</span> Compartir per WhatsApp
+              </button>
+              
+              <button style={{
+                width: "100%", padding: "14px 20px", border: "none", borderRadius: 12,
+                background: "linear-gradient(135deg, #833AB4, #E1306C, #F77737)", color: "#fff",
+                fontSize: 14, fontWeight: 700, cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+              }}>
+                <span style={{ fontSize: 18 }}>📸</span> Compartir a Instagram
+              </button>
+              
+              <button style={{
+                width: "100%", padding: "14px 20px", border: "2px solid #E5DDD0",
+                borderRadius: 12, background: "#fff", color: "#555",
+                fontSize: 14, fontWeight: 600, cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+              }}>
+                <span style={{ fontSize: 18 }}>🔗</span> Copiar enllaç
+              </button>
+            </div>
+
+            <div style={{
+              width: "100%", marginTop: 20, padding: 14,
+              background: "#FFF9EE", borderRadius: 12, border: "1px solid #F0E4CC"
+            }}>
+              <button onClick={() => { setCurrentScreen(0); setSelectedRecipient(null); setSelectedGenres([]); setSelectedBook(null); }} style={{
+                width: "100%", padding: "12px", border: "none", borderRadius: 10,
+                background: "#8B6914", color: "#fff", fontSize: 13, fontWeight: 700,
+                cursor: "pointer"
+              }}>
+                🔄 Trobar un altre llibre per a algú més
+              </button>
+            </div>
+
+            {/* Footer credit */}
+            <div style={{
+              marginTop: 24, paddingTop: 14,
+              borderTop: "1px solid #E5DDD0", fontSize: 10, color: "#bbb", lineHeight: 1.6
+            }}>
+              Creat amb codi real i IA per <span style={{ color: "#8B6914", fontWeight: 600 }}>Tu Agencia</span>
+              <br/>
+              <span style={{ color: "#C41E3A" }}>Necessites una web o app? →</span>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#f0ece4",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "24px 16px",
+      fontFamily: "'DM Sans', 'Segoe UI', sans-serif"
+    }}>
+      <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=Caveat:wght@400;500&display=swap" rel="stylesheet" />
+      
+      {/* Title */}
+      <div style={{ textAlign: "center", marginBottom: 20 }}>
+        <div style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#8B6914", fontWeight: 600 }}>
+          UX/UI Mockup · Mobile First
+        </div>
+        <h1 style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 22, color: "#2D2D2D", margin: "6px 0 0"
+        }}>
+          Troba el teu Llibre 🌹
+        </h1>
+      </div>
+
+      {/* Screen selector pills */}
+      <div style={{
+        display: "flex", gap: 4, marginBottom: 20, overflowX: "auto",
+        maxWidth: "100%", padding: "4px 0"
+      }}>
+        {SCREEN_LABELS.map((label, i) => (
+          <button key={i} onClick={() => setCurrentScreen(i)} style={{
+            padding: "6px 12px", border: currentScreen === i ? "2px solid #C41E3A" : "1px solid #ddd",
+            borderRadius: 20, background: currentScreen === i ? "#C41E3A" : "#fff",
+            color: currentScreen === i ? "#fff" : "#888",
+            fontSize: 10, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
+            flexShrink: 0, transition: "all 0.15s"
+          }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Phone mockup */}
+      <Phone>
+        {renderScreen()}
+      </Phone>
+
+      {/* Navigation arrows */}
+      <div style={{ display: "flex", gap: 12, marginTop: 20 }}>
+        <button onClick={() => setCurrentScreen(Math.max(0, currentScreen - 1))} style={{
+          width: 44, height: 44, borderRadius: "50%", border: "2px solid #ddd",
+          background: "#fff", cursor: "pointer", fontSize: 18, color: "#888",
+          display: "flex", alignItems: "center", justifyContent: "center"
+        }}>←</button>
+        <div style={{
+          padding: "10px 20px", background: "#fff", borderRadius: 22,
+          border: "1px solid #eee", fontSize: 12, fontWeight: 600, color: "#555",
+          display: "flex", alignItems: "center"
+        }}>
+          {currentScreen + 1} / {SCREENS.length} — {SCREEN_LABELS[currentScreen]}
+        </div>
+        <button onClick={() => setCurrentScreen(Math.min(SCREENS.length - 1, currentScreen + 1))} style={{
+          width: 44, height: 44, borderRadius: "50%", border: "2px solid #C41E3A",
+          background: "#C41E3A", cursor: "pointer", fontSize: 18, color: "#fff",
+          display: "flex", alignItems: "center", justifyContent: "center"
+        }}>→</button>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(SantJordiMockup));
+</script>
+</body>
+</html>
