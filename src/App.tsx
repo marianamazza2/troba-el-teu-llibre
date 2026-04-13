@@ -2,6 +2,9 @@ import { LanguageContext, useLanguageState } from './hooks/useLanguage';
 import { useWizard } from './hooks/useWizard';
 import Landing from './screens/Landing';
 import Loading from './screens/Loading';
+import Results from './screens/Results';
+import Dedication from './screens/Dedication';
+import Share from './screens/Share';
 import Step1Recipient from './components/wizard/Step1Recipient';
 import Step2Description from './components/wizard/Step2Description';
 import Step3Genres from './components/wizard/Step3Genres';
@@ -115,24 +118,37 @@ function AppContent() {
           />
         );
 
-      // Fase 6 — placeholders hasta implementar
       case 'results':
-      case 'dedication':
-      case 'share':
+        if (!state.results) return null;
         return (
-          <div className="min-h-screen flex items-center justify-center px-6 text-center">
-            <div>
-              <p className="text-[40px]">🚧</p>
-              <p className="text-text-secondary mt-2 text-[14px]">Pantalla "{state.currentScreen}" — Fase 6</p>
-              <button
-                type="button"
-                onClick={() => setScreen('landing')}
-                className="mt-4 text-primary text-[13px] font-semibold underline cursor-pointer"
-              >
-                ← Tornar a l'inici
-              </button>
-            </div>
-          </div>
+          <Results
+            results={state.results}
+            recipient={state.recipient ?? ''}
+            onDedication={() => setScreen('dedication')}
+            onShare={() => setScreen('share')}
+            onRestart={() => { wizard.reset(); }}
+          />
+        );
+
+      case 'dedication':
+        if (!state.results) return null;
+        return (
+          <Dedication
+            dedication={state.results.dedication}
+            recipient={state.recipient ?? ''}
+            onBack={() => setScreen('results')}
+            onShare={() => setScreen('share')}
+          />
+        );
+
+      case 'share':
+        if (!state.results) return null;
+        return (
+          <Share
+            books={state.results.books}
+            recipient={state.recipient ?? ''}
+            onRestart={() => { wizard.reset(); }}
+          />
         );
 
       default:
