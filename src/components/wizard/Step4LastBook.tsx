@@ -14,7 +14,7 @@ export default function Step4LastBook({ value, onChange, onNext, onSkip, onBack 
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <div className="px-6 pt-8">
         <ProgressBar currentStep={3} />
       </div>
@@ -36,7 +36,7 @@ export default function Step4LastBook({ value, onChange, onNext, onSkip, onBack 
           placeholder={t('q4_placeholder')}
           className="
             w-full rounded-2xl border-2 border-cream-dark bg-white
-            px-4 py-3.5 text-[14px] text-text
+            px-4 py-3.5 text-base text-text
             placeholder:text-text-muted
             focus:outline-none focus:border-primary
             transition-colors duration-200

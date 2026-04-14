@@ -24,7 +24,7 @@ export default function Step2Description({ value, onChange, onNext, onBack, canP
   }, [value]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <div className="px-6 pt-8">
         <ProgressBar currentStep={1} />
       </div>
@@ -47,7 +47,7 @@ export default function Step2Description({ value, onChange, onNext, onBack, canP
           rows={4}
           className="
             w-full rounded-2xl border-2 border-cream-dark bg-white
-            px-4 py-3.5 text-[14px] text-text leading-relaxed
+            px-4 py-3.5 text-base text-text leading-relaxed
             placeholder:text-text-muted resize-none
             focus:outline-none focus:border-primary
             transition-colors duration-200

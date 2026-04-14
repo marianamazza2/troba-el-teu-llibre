@@ -40,7 +40,7 @@ export default function Loading({ error, onRetry }: LoadingProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-6">
+      <div className="min-h-dvh flex flex-col items-center justify-center px-6 text-center gap-6">
         <span className="text-[56px]">😔</span>
         <p className="text-text-secondary text-[15px] leading-relaxed">{error}</p>
         <Button onClick={onRetry} fullWidth>
@@ -51,7 +51,7 @@ export default function Loading({ error, onRetry }: LoadingProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-8">
+    <div className="min-h-dvh flex flex-col items-center justify-center px-6 text-center gap-8">
       {/* Rosa pulsante */}
       <span
         className="text-[64px] block select-none"

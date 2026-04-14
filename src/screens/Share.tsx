@@ -51,7 +51,7 @@ export default function Share({ books, recipient, onRestart }: ShareProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-dvh flex flex-col px-6 py-8">
       <Toast
         message={toastMsg}
         visible={toastVisible}
@@ -124,7 +124,7 @@ export default function Share({ books, recipient, onRestart }: ShareProps) {
           <button
             type="button"
             className="w-full bg-cream rounded-xl py-3 text-[13px] font-semibold text-text-secondary hover:bg-cream-dark transition-colors cursor-pointer"
-            onClick={() => trackEvent('follow_instagram')}
+            onClick={() => { trackEvent('follow_instagram'); window.open('https://www.instagram.com/mazzmkt', '_blank'); }}
           >
             {t('follow_instagram')}
           </button>

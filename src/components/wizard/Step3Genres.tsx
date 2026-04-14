@@ -22,7 +22,7 @@ export default function Step3Genres({ selected, onToggle, onNext, onBack, canPro
       : `${selected.length} ${t('q3_count_many')}`;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <div className="px-6 pt-8">
         <ProgressBar currentStep={2} />
       </div>

@@ -32,7 +32,7 @@ export default function Dedication({ dedication, recipient, onBack, onShare }: D
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-dvh flex flex-col px-6 py-8">
       <Toast
         message={t('dedication_copied')}
         visible={toastVisible}

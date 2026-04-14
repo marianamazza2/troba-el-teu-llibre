@@ -56,7 +56,7 @@ export default function Step5Preferences({
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-dvh flex flex-col">
       <div className="px-6 pt-8">
         <ProgressBar currentStep={4} />
       </div>

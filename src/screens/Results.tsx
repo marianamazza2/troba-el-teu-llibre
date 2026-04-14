@@ -10,7 +10,6 @@ import recipients from '../i18n/recipients';
 interface ResultsProps {
   results: RecommendationResponse;
   recipient: string;
-  onDedication: () => void;
   onShare: () => void;
   onRestart: () => void;
 }
@@ -68,7 +67,7 @@ function BookCard({ book, index }: { book: BookRecommendation; index: number }) 
 
         <div className="bg-primary-light rounded-xl p-3">
           <p className="text-[11px] font-bold text-primary uppercase tracking-wider mb-1">
-            Per què és perfecte ✨
+            {t('results_why_perfect')} ✨
           </p>
           <p className="text-[13px] text-text leading-relaxed">{book.whyPerfect}</p>
         </div>
@@ -87,7 +86,7 @@ function BookCard({ book, index }: { book: BookRecommendation; index: number }) 
   );
 }
 
-export default function Results({ results, recipient, onDedication, onShare, onRestart }: ResultsProps) {
+export default function Results({ results, recipient, onShare, onRestart }: ResultsProps) {
   const { language, t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
@@ -109,7 +108,7 @@ export default function Results({ results, recipient, onDedication, onShare, onR
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-dvh flex flex-col px-6 py-8">
       {/* Header */}
       <div
         className={`text-center mb-6 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
@@ -139,10 +138,7 @@ export default function Results({ results, recipient, onDedication, onShare, onR
       <div
         className={`flex flex-col gap-3 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
-        <Button onClick={onDedication} fullWidth>
-          {t('results_dedication_btn')}
-        </Button>
-        <Button onClick={onShare} variant="secondary" fullWidth>
+        <Button onClick={onShare} fullWidth>
           {t('results_share_btn')}
         </Button>
         <Button onClick={onRestart} variant="ghost" fullWidth>

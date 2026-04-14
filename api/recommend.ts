@@ -20,7 +20,6 @@ interface ClaudeBook {
 
 interface ClaudeResult {
   books: ClaudeBook[];
-  dedication: string;
 }
 
 // Rate limiting: max 10 req/IP/hour (Map en memoria)
@@ -42,9 +41,9 @@ async function callClaude(data: WizardData): Promise<ClaudeResult> {
   const { recipient, description, genres, lastBook, preferredLanguage, budget } = data;
 
   const lang =
-    preferredLanguage === 'Català' ? 'català' :
-    preferredLanguage === 'Castellà' ? 'castellà' :
-    preferredLanguage === 'Anglès' ? 'anglès' :
+    preferredLanguage === 'catala' ? 'català' :
+    preferredLanguage === 'castella' ? 'castellà' :
+    preferredLanguage === 'angles' ? 'anglès' :
     'català';
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -55,7 +54,7 @@ async function callClaude(data: WizardData): Promise<ClaudeResult> {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 1500,
       system:
         "Ets un expert en literatura amb profund coneixement de llibreries de Barcelona i Catalunya. " +
@@ -82,8 +81,7 @@ Respon amb exactament aquest format JSON:
       "why_perfect": "1-2 línies explicant per què és ideal per a aquesta persona, en ${lang}",
       "price_estimate": "preu estimat en euros, ex: 14.90"
     }
-  ],
-  "dedication": "dedicatòria curta i emotiva per al primer llibre, personalitzada per a ${recipient}, en ${lang}"
+  ]
 }`,
         },
       ],
@@ -95,7 +93,8 @@ Respon amb exactament aquest format JSON:
   }
 
   const raw = (await response.json()) as { content: Array<{ text: string }> };
-  return JSON.parse(raw.content[0].text) as ClaudeResult;
+  const text = raw.content[0].text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+  return JSON.parse(text) as ClaudeResult;
 }
 
 async function getBookCover(title: string, author: string, isbn: string): Promise<string | null> {
@@ -207,7 +206,6 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
   return send(res, 200, {
     books: booksWithCovers,
-    dedication: claudeResult.dedication,
     resultId,
   });
 }

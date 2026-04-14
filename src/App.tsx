@@ -3,7 +3,7 @@ import { useWizard } from './hooks/useWizard';
 import Landing from './screens/Landing';
 import Loading from './screens/Loading';
 import Results from './screens/Results';
-import Dedication from './screens/Dedication';
+import FollowGate from './screens/FollowGate';
 import Share from './screens/Share';
 import Step1Recipient from './components/wizard/Step1Recipient';
 import Step2Description from './components/wizard/Step2Description';
@@ -124,20 +124,15 @@ function AppContent() {
           <Results
             results={state.results}
             recipient={state.recipient ?? ''}
-            onDedication={() => setScreen('dedication')}
-            onShare={() => setScreen('share')}
+            onShare={() => setScreen('follow_gate')}
             onRestart={() => { wizard.reset(); }}
           />
         );
 
-      case 'dedication':
-        if (!state.results) return null;
+      case 'follow_gate':
         return (
-          <Dedication
-            dedication={state.results.dedication}
-            recipient={state.recipient ?? ''}
-            onBack={() => setScreen('results')}
-            onShare={() => setScreen('share')}
+          <FollowGate
+            onContinue={() => setScreen('share')}
           />
         );
 
@@ -160,7 +155,7 @@ function AppContent() {
   void stepIndex;
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-dvh bg-cream">
       <div className="w-full max-w-[480px] mx-auto relative">
         {renderScreen()}
       </div>

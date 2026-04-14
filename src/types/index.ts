@@ -32,7 +32,6 @@ export interface BookRecommendation {
 
 export interface RecommendationResponse {
   books: BookRecommendation[];
-  dedication: string;
   resultId: string;
 }
 
@@ -41,7 +40,6 @@ export interface SavedResult {
   timestamp: number;
   recipient: string;
   books: BookRecommendation[];
-  dedication: string;
 }
 
 export type Screen =
@@ -53,7 +51,7 @@ export type Screen =
   | 'q5_prefs'
   | 'loading'
   | 'results'
-  | 'dedication'
+  | 'follow_gate'
   | 'share';
 
 export interface WizardState {
