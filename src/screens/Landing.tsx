@@ -27,7 +27,7 @@ export default function Landing({ onStart }: LandingProps) {
   }, []);
 
   return (
-    <div className="min-h-dvh flex flex-col px-6 py-8">
+    <div className="min-h-dvh flex flex-col px-6 pt-8 pb-safe">
       {/* Language selector */}
       <div className="flex justify-end mb-6">
         <div className="flex gap-1 bg-white rounded-xl p-1 border border-cream-dark">
