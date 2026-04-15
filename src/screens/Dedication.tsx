@@ -32,25 +32,26 @@ export default function Dedication({ dedication, recipient, onBack, onShare }: D
   };
 
   return (
-    <div className="min-h-dvh flex flex-col px-6 py-8">
+    <div className="h-dvh flex flex-col">
       <Toast
         message={t('dedication_copied')}
         visible={toastVisible}
         onHide={() => setToastVisible(false)}
       />
 
-      {/* Header */}
-      <div className="text-center mb-8">
-        <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
-          {t('dedication_sub')} {recipientLabel}
-        </span>
-        <h1 className="font-playfair text-[28px] font-extrabold text-text leading-tight">
-          {t('dedication_title')}
-        </h1>
-      </div>
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-6 pt-8 pb-4">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
+            {t('dedication_sub')} {recipientLabel}
+          </span>
+          <h1 className="font-playfair text-[28px] font-extrabold text-text leading-tight">
+            {t('dedication_title')}
+          </h1>
+        </div>
 
-      {/* Dedication card */}
-      <div className="flex-1 flex flex-col">
+        {/* Dedication card */}
         <div className="bg-white rounded-2xl border border-cream-dark shadow-sm p-6 mb-6 relative">
           <span className="text-[32px] absolute -top-4 left-1/2 -translate-x-1/2">🌹</span>
           <div className="pt-4">
@@ -73,8 +74,8 @@ export default function Dedication({ dedication, recipient, onBack, onShare }: D
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="flex gap-2 mb-4">
+        {/* Copy / Edit buttons */}
+        <div className="flex gap-2">
           <button
             type="button"
             onClick={handleCopy}
@@ -95,15 +96,16 @@ export default function Dedication({ dedication, recipient, onBack, onShare }: D
             {editing ? t('dedication_done') : t('dedication_edit')}
           </button>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-3 mt-auto">
-          <Button onClick={onShare} fullWidth>
-            {t('dedication_share')}
-          </Button>
-          <Button onClick={onBack} variant="ghost" fullWidth>
-            {t('dedication_back')}
-          </Button>
-        </div>
+      {/* Buttons — always visible at bottom */}
+      <div className="flex-shrink-0 flex flex-col gap-3 px-6 py-6">
+        <Button onClick={onShare} fullWidth>
+          {t('dedication_share')}
+        </Button>
+        <Button onClick={onBack} variant="ghost" fullWidth>
+          {t('dedication_back')}
+        </Button>
       </div>
     </div>
   );

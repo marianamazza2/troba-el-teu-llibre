@@ -29,7 +29,7 @@ export default function FollowGate({ onContinue }: FollowGateProps) {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
+    <div className="h-dvh flex flex-col items-center justify-center px-6 py-12">
       {/* Icon */}
       <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCB045] flex items-center justify-center mb-6 shadow-lg">
         <span className="text-[36px]">📷</span>

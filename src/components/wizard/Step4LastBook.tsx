@@ -14,12 +14,12 @@ export default function Step4LastBook({ value, onChange, onNext, onSkip, onBack 
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-dvh flex flex-col">
-      <div className="px-6 pt-8">
+    <div className="h-dvh flex flex-col">
+      <div className="px-6 pt-8 flex-shrink-0">
         <ProgressBar currentStep={3} />
       </div>
 
-      <div className="flex-1 flex flex-col px-6 pb-8">
+      <div className="flex-1 overflow-y-auto px-6 pt-4">
         {/* Header */}
         <div className="mb-6">
           <h2 className="font-playfair text-[28px] font-bold text-text leading-tight mb-1">
@@ -51,16 +51,16 @@ export default function Step4LastBook({ value, onChange, onNext, onSkip, onBack 
         >
           {t('q4_skip')}
         </button>
+      </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-3 mt-auto pt-8">
-          <Button onClick={onNext} fullWidth>
-            {t('btn_continue')}
-          </Button>
-          <Button onClick={onBack} variant="ghost" fullWidth>
-            {t('btn_back')}
-          </Button>
-        </div>
+      {/* Buttons — always visible at bottom */}
+      <div className="flex-shrink-0 flex flex-col gap-3 px-6 py-6">
+        <Button onClick={onNext} fullWidth>
+          {t('btn_continue')}
+        </Button>
+        <Button onClick={onBack} variant="ghost" fullWidth>
+          {t('btn_back')}
+        </Button>
       </div>
     </div>
   );

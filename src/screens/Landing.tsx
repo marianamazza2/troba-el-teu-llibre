@@ -127,14 +127,23 @@ export default function Landing({ onStart }: LandingProps) {
       <div className="text-center mt-8 flex flex-col gap-1">
         <p className="text-[11px] text-text-muted">
           {t('footer_credit')}{' '}
-          <span className="font-bold text-text-secondary">Mariana Mazzariello</span>
+          <a
+            href="https://www.instagram.com/mazzmkt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-text-secondary hover:underline"
+          >
+            mazzmkt
+          </a>
         </p>
-        <button
-          type="button"
-          className="text-[11px] text-primary font-semibold cursor-pointer hover:underline"
+        <a
+          href="https://wa.me/34673337621"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[11px] text-primary font-semibold hover:underline"
         >
           {t('footer_cta')}
-        </button>
+        </a>
       </div>
     </div>
   );

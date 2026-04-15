@@ -51,7 +51,7 @@ export default function Share({ books, recipient, onRestart }: ShareProps) {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col px-6 py-8">
+    <div className="h-dvh flex flex-col overflow-y-auto px-6 py-8">
       <Toast
         message={toastMsg}
         visible={toastVisible}

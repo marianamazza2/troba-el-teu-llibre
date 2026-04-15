@@ -56,12 +56,12 @@ export default function Step5Preferences({
   );
 
   return (
-    <div className="min-h-dvh flex flex-col">
-      <div className="px-6 pt-8">
+    <div className="h-dvh flex flex-col">
+      <div className="px-6 pt-8 flex-shrink-0">
         <ProgressBar currentStep={4} />
       </div>
 
-      <div className="flex-1 flex flex-col px-6 pb-8">
+      <div className="flex-1 overflow-y-auto px-6 pt-4">
         {/* Header */}
         <div className="mb-8">
           <h2 className="font-playfair text-[28px] font-bold text-text leading-tight mb-1">
@@ -86,7 +86,7 @@ export default function Step5Preferences({
         </div>
 
         {/* Pressupost */}
-        <div className="mb-auto">
+        <div>
           <p className="text-[13px] font-bold text-text mb-3">{t('q5_budget_label')}</p>
           <div className="flex gap-2">
             {budgetOptions.map((opt) => (
@@ -99,16 +99,16 @@ export default function Step5Preferences({
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-3 mt-8">
-          <Button onClick={onSubmit} fullWidth>
-            {t('btn_find')}
-          </Button>
-          <Button onClick={onBack} variant="ghost" fullWidth>
-            {t('btn_back')}
-          </Button>
-        </div>
+      {/* Buttons — always visible at bottom */}
+      <div className="flex-shrink-0 flex flex-col gap-3 px-6 py-6">
+        <Button onClick={onSubmit} fullWidth>
+          {t('btn_find')}
+        </Button>
+        <Button onClick={onBack} variant="ghost" fullWidth>
+          {t('btn_back')}
+        </Button>
       </div>
     </div>
   );

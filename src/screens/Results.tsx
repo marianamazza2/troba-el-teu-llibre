@@ -108,35 +108,38 @@ export default function Results({ results, recipient, onShare, onRestart }: Resu
   }, []);
 
   return (
-    <div className="min-h-dvh flex flex-col px-6 py-8">
-      {/* Header */}
-      <div
-        className={`text-center mb-6 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
-      >
-        <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
-          {t('results_label')}
-        </span>
-        <h1 className="font-playfair text-[30px] font-extrabold text-text leading-tight mb-1">
-          {t('results_title')}
-        </h1>
-        <p className="text-text-secondary text-[14px]">
-          {t('results_for')}{' '}
-          <span className="font-semibold text-text">{recipientLabel}</span>
-        </p>
+    <div className="h-dvh flex flex-col">
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-6 pt-8 pb-4">
+        {/* Header */}
+        <div
+          className={`text-center mb-6 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+        >
+          <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
+            {t('results_label')}
+          </span>
+          <h1 className="font-playfair text-[30px] font-extrabold text-text leading-tight mb-1">
+            {t('results_title')}
+          </h1>
+          <p className="text-text-secondary text-[14px]">
+            {t('results_for')}{' '}
+            <span className="font-semibold text-text">{recipientLabel}</span>
+          </p>
+        </div>
+
+        {/* Book cards */}
+        <div
+          className={`flex flex-col gap-4 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        >
+          {results.books.map((book, i) => (
+            <BookCard key={i} book={book} index={i} />
+          ))}
+        </div>
       </div>
 
-      {/* Book cards */}
+      {/* CTAs — always visible at bottom */}
       <div
-        className={`flex flex-col gap-4 mb-6 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-      >
-        {results.books.map((book, i) => (
-          <BookCard key={i} book={book} index={i} />
-        ))}
-      </div>
-
-      {/* CTAs */}
-      <div
-        className={`flex flex-col gap-3 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        className={`flex-shrink-0 flex flex-col gap-3 px-6 py-6 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
         <Button onClick={onShare} fullWidth>
           {t('results_share_btn')}
