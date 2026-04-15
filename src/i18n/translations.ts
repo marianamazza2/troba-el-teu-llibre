@@ -50,7 +50,7 @@ const translations: Record<Language, Record<string, string>> = {
     results_for: 'Per a la teva',
     results_why_perfect: 'Per què és perfecte',
     results_search: 'Buscar en llibreries →',
-    results_share_btn: 'Compartir resultats →',
+    results_share_btn: 'Enviar-me els resultats →',
 
     share_title: 'Comparteix-ho!',
     share_subtitle: 'Envia les recomanacions o ajuda a algú més a trobar el seu llibre',
@@ -129,7 +129,7 @@ const translations: Record<Language, Record<string, string>> = {
     results_for: 'Para tu',
     results_why_perfect: 'Por qué es perfecto',
     results_search: 'Buscar en librerías →',
-    results_share_btn: 'Compartir resultados →',
+    results_share_btn: 'Enviarme los resultados →',
 
     share_title: '¡Compártelo!',
     share_subtitle: 'Envía las recomendaciones o ayuda a alguien más a encontrar su libro',
@@ -208,7 +208,7 @@ const translations: Record<Language, Record<string, string>> = {
     results_for: 'For your',
     results_why_perfect: 'Why it\'s perfect',
     results_search: 'Search in bookstores →',
-    results_share_btn: 'Share results →',
+    results_share_btn: 'Send me the results →',
 
     share_title: 'Share it!',
     share_subtitle: 'Send the recommendations or help someone else find their book',

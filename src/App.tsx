@@ -152,23 +152,11 @@ function AppContent() {
     }
   };
 
-  // stepIndex() retorna -1 fuera del wizard; no necesitamos prop aquí
   void stepIndex;
-
-  const WIZARD_SCREENS = ['q1_recipient', 'q2_describe', 'q3_genres', 'q4_lastbook', 'q5_prefs'];
-  const isWizardStep = WIZARD_SCREENS.includes(state.currentScreen);
 
   return (
     <div className="min-h-dvh bg-cream">
       <div className="w-full max-w-[480px] mx-auto relative">
-        {isWizardStep && (
-          <button
-            onClick={() => wizard.reset()}
-            className="absolute top-5 left-6 z-10 text-[13px] font-semibold text-text-muted hover:text-text transition-colors flex items-center gap-1"
-          >
-            ← Inicio
-          </button>
-        )}
         {renderScreen()}
       </div>
     </div>
