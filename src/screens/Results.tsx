@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../hooks/useLanguage';
 import { saveResult } from '../hooks/useLocalStorage';
 import { fireConfetti } from '../lib/confetti';
@@ -89,6 +89,8 @@ function BookCard({ book, index }: { book: BookRecommendation; index: number }) 
 export default function Results({ results, recipient, onShare, onRestart }: ResultsProps) {
   const { language, t } = useLanguage();
   const [visible, setVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   // Get recipient label
   const recipientOptions = recipients[language];
@@ -107,39 +109,71 @@ export default function Results({ results, recipient, onShare, onRestart }: Resu
     return () => clearTimeout(timer);
   }, []);
 
+  const handleScroll = () => {
+    const el = sliderRef.current;
+    if (!el) return;
+    const index = Math.round(el.scrollLeft / el.clientWidth);
+    setActiveIndex(index);
+  };
+
+  const scrollToIndex = (i: number) => {
+    const el = sliderRef.current;
+    if (!el) return;
+    el.scrollTo({ left: el.clientWidth * i, behavior: 'smooth' });
+  };
+
   return (
     <div className="h-dvh flex flex-col">
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-6 pt-8 pb-4">
-        {/* Header */}
-        <div
-          className={`text-center mb-6 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
-        >
-          <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
-            {t('results_label')}
-          </span>
-          <h1 className="font-playfair text-[30px] font-extrabold text-text leading-tight mb-1">
-            {t('results_title')}
-          </h1>
-          <p className="text-text-secondary text-[14px]">
-            {t('results_for')}{' '}
-            <span className="font-semibold text-text">{recipientLabel}</span>
-          </p>
-        </div>
+      {/* Header */}
+      <div
+        className={`flex-shrink-0 text-center px-6 pt-8 pb-4 transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+      >
+        <span className="text-[10px] font-bold tracking-[2px] uppercase text-primary block mb-2">
+          {t('results_label')}
+        </span>
+        <h1 className="font-playfair text-[28px] font-extrabold text-text leading-tight mb-1">
+          {t('results_title')}
+        </h1>
+        <p className="text-text-secondary text-[14px]">
+          {t('results_for')}{' '}
+          <span className="font-semibold text-text">{recipientLabel}</span>
+        </p>
+      </div>
 
-        {/* Book cards */}
+      {/* Slider */}
+      <div
+        className={`flex-1 min-h-0 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+      >
         <div
-          className={`flex flex-col gap-4 transition-all duration-500 delay-100 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+          ref={sliderRef}
+          onScroll={handleScroll}
+          className="flex h-full overflow-x-auto snap-x snap-mandatory"
+          style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
         >
           {results.books.map((book, i) => (
-            <BookCard key={i} book={book} index={i} />
+            <div key={i} className="snap-center flex-shrink-0 w-full h-full overflow-y-auto px-6 py-2">
+              <BookCard book={book} index={i} />
+            </div>
           ))}
         </div>
       </div>
 
+      {/* Dot indicators */}
+      <div
+        className={`flex-shrink-0 flex justify-center gap-2 py-2 transition-all duration-500 delay-150 ${visible ? 'opacity-100' : 'opacity-0'}`}
+      >
+        {results.books.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollToIndex(i)}
+            className={`h-2 rounded-full transition-all duration-300 ${i === activeIndex ? 'w-5 bg-primary' : 'w-2 bg-cream-dark'}`}
+          />
+        ))}
+      </div>
+
       {/* CTAs — always visible at bottom */}
       <div
-        className={`flex-shrink-0 flex flex-col gap-3 px-6 py-6 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+        className={`flex-shrink-0 flex flex-col gap-3 px-6 pb-6 pt-2 transition-all duration-500 delay-200 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
       >
         <Button onClick={onShare} fullWidth>
           {t('results_share_btn')}

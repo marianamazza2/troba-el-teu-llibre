@@ -39,10 +39,15 @@ export default function Loading({ error, onRetry }: LoadingProps) {
   }, [error]);
 
   if (error) {
+    const errorMessage =
+      error === 'rate_limit' ? t('error_rate') :
+      error === 'timeout'    ? t('error_timeout') :
+      t('error_generic');
+
     return (
       <div className="h-dvh flex flex-col items-center justify-center px-6 text-center gap-6">
         <span className="text-[56px]">😔</span>
-        <p className="text-text-secondary text-[15px] leading-relaxed">{error}</p>
+        <p className="text-text-secondary text-[15px] leading-relaxed">{errorMessage}</p>
         <Button onClick={onRetry} fullWidth>
           {t('btn_retry')}
         </Button>
