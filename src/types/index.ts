@@ -33,6 +33,7 @@ export interface BookRecommendation {
 export interface RecommendationResponse {
   books: BookRecommendation[];
   resultId: string;
+  dedication: string;
 }
 
 export interface SavedResult {
@@ -40,6 +41,7 @@ export interface SavedResult {
   timestamp: number;
   recipient: string;
   books: BookRecommendation[];
+  dedication: string;
 }
 
 export type Screen =
