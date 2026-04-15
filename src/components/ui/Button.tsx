@@ -25,7 +25,7 @@ export default function Button({
     secondary:
       'bg-transparent border-2 border-cream-dark text-text-secondary hover:border-primary hover:text-primary',
     ghost:
-      'bg-transparent text-text-muted hover:text-primary text-[13px] font-normal',
+      'bg-transparent text-text hover:text-primary text-[13px] font-normal',
   };
 
   return (
