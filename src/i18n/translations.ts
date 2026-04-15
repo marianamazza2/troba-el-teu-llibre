@@ -70,7 +70,7 @@ const translations: Record<Language, Record<string, string>> = {
     follow_subtitle: 'Ajuda\'ns a arribar a més gent',
     follow_instagram: '📷 Segueix-nos a Instagram',
     follow_google: '⭐ Deixa\'ns una ressenya a Google',
-    restart: '🔄 Trobar un altre llibre per a algú més',
+    restart: '🔄 Fer una altra cerca',
 
     error_timeout: 'Uy, ha trigat massa. Torna-ho a provar?',
     error_generic: 'Alguna cosa ha fallat. Torna-ho a provar?',
@@ -149,7 +149,7 @@ const translations: Record<Language, Record<string, string>> = {
     follow_subtitle: 'Ayúdanos a llegar a más gente',
     follow_instagram: '📷 Síguenos en Instagram',
     follow_google: '⭐ Déjanos una reseña en Google',
-    restart: '🔄 Encontrar otro libro para alguien más',
+    restart: '🔄 Hacer otra búsqueda',
 
     error_timeout: 'Uy, ha tardado demasiado. ¿Volver a intentar?',
     error_generic: 'Algo ha fallado. ¿Volver a intentar?',
@@ -228,7 +228,7 @@ const translations: Record<Language, Record<string, string>> = {
     follow_subtitle: 'Help us reach more people',
     follow_instagram: '📷 Follow us on Instagram',
     follow_google: '⭐ Leave us a review on Google',
-    restart: '🔄 Find another book for someone else',
+    restart: '🔄 New search',
 
     error_timeout: 'Oops, that took too long. Try again?',
     error_generic: 'Something went wrong. Try again?',
