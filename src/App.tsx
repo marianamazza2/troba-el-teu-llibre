@@ -30,6 +30,7 @@ function AppContent() {
   } = wizard;
 
   const handleSubmit = async () => {
+    setError(null);
     setLoading(true);
     setScreen('loading');
     try {
