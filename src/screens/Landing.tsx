@@ -78,6 +78,15 @@ export default function Landing({ onStart }: LandingProps) {
           </h1>
           <p className="text-text-secondary text-[15px] leading-relaxed whitespace-pre-line max-w-[300px] mx-auto">
             {t('hero_subtitle')}
+            <a
+              href="https://www.instagram.com/mazzmkt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold underline"
+            >
+              mazzmkt
+            </a>
+            {t('hero_subtitle_after')}
           </p>
         </div>
 
@@ -131,7 +140,7 @@ export default function Landing({ onStart }: LandingProps) {
             href="https://www.instagram.com/mazzmkt"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-text-secondary hover:underline"
+            className="font-bold underline text-text-secondary"
           >
             mazzmkt
           </a>

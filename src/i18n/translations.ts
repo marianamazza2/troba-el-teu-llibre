@@ -4,7 +4,8 @@ const translations: Record<Language, Record<string, string>> = {
   cat: {
     hero_label: 'Sant Jordi 2026',
     hero_title: 'Troba el teu\nLlibre',
-    hero_subtitle: 'No saps quin llibre regalar?\nLa intel·ligència artificial t\'ajuda a trobar el regal perfecte.',
+    hero_subtitle: 'No saps quin llibre regalar?\n',
+    hero_subtitle_after: ' t\'ajuda a trobar el regal perfecte.',
     cta_main: 'Troba el teu llibre →',
     previous_results: '📚 Les teves cerques anteriors',
     footer_credit: 'Creat amb codi i IA per',
@@ -82,7 +83,8 @@ const translations: Record<Language, Record<string, string>> = {
   es: {
     hero_label: 'Sant Jordi 2026',
     hero_title: 'Encuentra tu\nLibro',
-    hero_subtitle: '¿No sabes qué libro regalar?\nLa inteligencia artificial te ayuda a encontrar el regalo perfecto.',
+    hero_subtitle: '¿No sabes qué libro regalar?\n',
+    hero_subtitle_after: ' te ayuda a encontrar el regalo perfecto.',
     cta_main: 'Encuentra tu libro →',
     previous_results: '📚 Tus búsquedas anteriores',
     footer_credit: 'Creado con código real e IA por',
@@ -160,7 +162,8 @@ const translations: Record<Language, Record<string, string>> = {
   en: {
     hero_label: 'Sant Jordi 2026',
     hero_title: 'Find your\nBook',
-    hero_subtitle: 'Don\'t know what book to give?\nAI helps you find the perfect gift for Sant Jordi.',
+    hero_subtitle: 'Don\'t know what book to give?\n',
+    hero_subtitle_after: ' helps you find the perfect gift for Sant Jordi.',
     cta_main: 'Find your book →',
     previous_results: '📚 Your previous searches',
     footer_credit: 'Built with real code & AI by',
