@@ -18,7 +18,7 @@ function detectBrowserLanguage(): Language {
   const lang = navigator.language?.toLowerCase() ?? '';
   if (lang.startsWith('ca')) return 'cat';
   if (lang.startsWith('es')) return 'es';
-  return 'en';
+  return 'cat';
 }
 
 export function useLanguageState() {

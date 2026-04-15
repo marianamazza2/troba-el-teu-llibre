@@ -59,7 +59,7 @@ async function callClaude(data: WizardData): Promise<ClaudeResult> {
       system:
         "Ets un expert en literatura amb profund coneixement de llibreries de Barcelona i Catalunya. " +
         "L'usuari busca un regal de Sant Jordi. Fes recomanacions de llibres REALS que existeixin, amb autors reals. " +
-        "Respon NOMÉS amb JSON vàlid, sense cap text addicional, backticks ni markdown.",
+        "Respon ÚNICAMENT amb l'objecte JSON, sense cap text addicional, backticks ni markdown.",
       messages: [
         {
           role: 'user',
@@ -67,34 +67,46 @@ async function callClaude(data: WizardData): Promise<ClaudeResult> {
 Descripció de la persona: ${description}
 Gèneres preferits: ${genres.join(', ')}
 Últim llibre que li va agradar: ${lastBook || 'No especificat'}
-Idioma preferit del llibre: ${preferredLanguage}
+Idioma preferit del llibre: ${lang}
 Pressupost: ${budget}
 
-Respon amb exactament aquest format JSON:
+Respon amb exactament aquest format JSON (3 llibres):
 {
   "books": [
     {
       "title": "títol del llibre",
       "author": "nom de l'autor",
-      "isbn": "ISBN si el coneixes, sinó string buit",
+      "isbn": "",
       "synopsis": "sinopsi breu de 2-3 línies en ${lang}",
       "why_perfect": "1-2 línies explicant per què és ideal per a aquesta persona, en ${lang}",
-      "price_estimate": "preu estimat en euros, ex: 14.90"
+      "price_estimate": "14.90"
     }
   ]
 }`,
+        },
+        {
+          role: 'assistant',
+          content: '{',
         },
       ],
     }),
   });
 
   if (!response.ok) {
-    throw new Error(`Claude API error: ${response.status}`);
+    const errBody = await response.text().catch(() => '');
+    throw new Error(`Claude API error: ${response.status} ${errBody}`);
   }
 
   const raw = (await response.json()) as { content: Array<{ text: string }> };
-  const text = raw.content[0].text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
-  return JSON.parse(text) as ClaudeResult;
+  const partial = raw.content?.[0]?.text ?? '';
+  // The assistant prefill already opened '{', so we reconstruct the full JSON
+  const fullJson = '{' + partial;
+
+  // Extract the JSON object robustly in case there's trailing text
+  const lastBrace = fullJson.lastIndexOf('}');
+  const jsonStr = lastBrace !== -1 ? fullJson.slice(0, lastBrace + 1) : fullJson;
+
+  return JSON.parse(jsonStr) as ClaudeResult;
 }
 
 async function getBookCover(title: string, author: string, isbn: string): Promise<string | null> {
@@ -177,17 +189,21 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return send(res, 400, { error: 'Invalid request body' });
   }
 
-  // Llamada a Claude con 1 reintento si falla el JSON
-  let claudeResult: ClaudeResult;
-  try {
-    claudeResult = await callClaude(data);
-  } catch {
+  // Llamada a Claude con hasta 3 reintentos
+  let claudeResult: ClaudeResult | null = null;
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 3; attempt++) {
     try {
       claudeResult = await callClaude(data);
+      break;
     } catch (e) {
-      console.error('Claude failed twice:', e);
-      return send(res, 500, { error: 'No s\'han pogut obtenir recomanacions. Torna-ho a provar.' });
+      lastError = e;
+      console.error(`Claude attempt ${attempt + 1} failed:`, e);
     }
+  }
+  if (!claudeResult) {
+    console.error('Claude failed after 3 attempts:', lastError);
+    return send(res, 500, { error: 'No s\'han pogut obtenir recomanacions. Torna-ho a provar.' });
   }
 
   // Buscar portadas en paralelo
