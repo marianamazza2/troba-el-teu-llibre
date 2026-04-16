@@ -19,9 +19,8 @@ export default function Share({ books, recipient, onRestart }: ShareProps) {
   const shareUrl = window.location.origin;
 
   const shareText =
-    `📚 He trobat 3 llibres perfectes per a ${recipient} gràcies a la IA!\n` +
-    books.slice(0, 3).map((b, i) => `${i + 1}. "${b.title}" de ${b.author}`).join('\n') +
-    `\n\nTroba el teu: ${shareUrl}`;
+    `${t('share_msg_intro')} ${recipient} ${t('share_msg_outro')} ${shareUrl}\n\n` +
+    books.slice(0, 3).map((b, i) => `${i + 1}. "${b.title}" de ${b.author}`).join('\n');
 
   const handleWhatsApp = () => {
     trackEvent('share_whatsapp');

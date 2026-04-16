@@ -52,6 +52,8 @@ const translations: Record<Language, Record<string, string>> = {
     results_search: 'Buscar en llibreries →',
     results_share_btn: 'Enviar-me els resultats →',
 
+    share_msg_intro: '📚 He trobat 3 llibres perfectes per a',
+    share_msg_outro: 'gràcies a la IA!\n\nTroba el teu:',
     share_title: 'Comparteix-ho!',
     share_subtitle: 'Envia les recomanacions o ajuda a algú més a trobar el seu llibre',
     share_whatsapp: 'Compartir per WhatsApp',
@@ -131,6 +133,8 @@ const translations: Record<Language, Record<string, string>> = {
     results_search: 'Buscar en librerías →',
     results_share_btn: 'Enviarme los resultados →',
 
+    share_msg_intro: '📚 He encontrado 3 libros perfectos para',
+    share_msg_outro: 'gracias a la IA!\n\nEncuentra el tuyo:',
     share_title: '¡Compártelo!',
     share_subtitle: 'Envía las recomendaciones o ayuda a alguien más a encontrar su libro',
     share_whatsapp: 'Compartir por WhatsApp',
@@ -210,6 +214,8 @@ const translations: Record<Language, Record<string, string>> = {
     results_search: 'Search in bookstores →',
     results_share_btn: 'Send me the results →',
 
+    share_msg_intro: '📚 I found 3 perfect books for',
+    share_msg_outro: 'thanks to AI!\n\nFind yours:',
     share_title: 'Share it!',
     share_subtitle: 'Send the recommendations or help someone else find their book',
     share_whatsapp: 'Share via WhatsApp',
